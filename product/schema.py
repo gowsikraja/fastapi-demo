@@ -12,7 +12,7 @@ class DisplaySeller(BaseModel):
     email: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class DisplayProduct(BaseModel):
@@ -21,10 +21,15 @@ class DisplayProduct(BaseModel):
     seller: DisplaySeller
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class Seller(BaseModel):
     username: str
     email: str
+    password: str
+
+
+class LoginRequest(BaseModel):
+    username: str
     password: str
