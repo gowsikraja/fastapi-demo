@@ -1,5 +1,6 @@
 from fastapi import APIRouter, status, Depends, HTTPException
 from sqlalchemy.orm import Session
+from ..router.login import get_user
 from ..import schema, model
 from ..database import get_db
 from typing import List
@@ -8,7 +9,7 @@ router = APIRouter(tags=['Products'], prefix='/product')
 
 
 @router.post('', status_code=status.HTTP_201_CREATED)
-def product(product: schema.Product, db: Session = Depends(get_db)):
+def product(product: schema.Product, db: Session = Depends(get_db), user: schema.Seller = Depends(get_user)):
     new_product = model.Product(
         name=product.name, description=product.description, price=product.price, seller_id=1)
     db.add(new_product)
@@ -18,7 +19,7 @@ def product(product: schema.Product, db: Session = Depends(get_db)):
 
 
 @router.get('', response_model=List[schema.DisplayProduct])
-def getProducts(db: Session = Depends(get_db)):
+def getProducts(db: Session = Depends(get_db), user: schema.Seller = Depends(get_user)):
     products = db.query(model.Product).all()
     return products
 

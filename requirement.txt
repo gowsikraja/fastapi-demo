@@ -4,3 +4,4 @@ pydantic
 uvicorn
 passlib[argon2]
 python-jose
+python-multipart
