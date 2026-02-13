@@ -25,7 +25,7 @@ def getProducts(db: Session = Depends(get_db), user: schema.Seller = Depends(get
 
 
 @router.get('/{id}')
-def getProduct(id, db: Session = Depends(get_db)):
+def getProduct(id, db: Session = Depends(get_db), user: schema.Seller = Depends(get_user)):
     product = db.query(model.Product).filter(model.Product.id == id).first()
 
     if not product:
@@ -36,7 +36,7 @@ def getProduct(id, db: Session = Depends(get_db)):
 
 
 @router.put('/{id}')
-def update(id, request: schema.Product, db: Session = Depends(get_db)):
+def update(id, request: schema.Product, db: Session = Depends(get_db), user: schema.Seller = Depends(get_user)):
     product = db.query(model.Product).filter(model.Product.id == id)
     if not product.first():
         raise HTTPException(
@@ -48,7 +48,7 @@ def update(id, request: schema.Product, db: Session = Depends(get_db)):
 
 
 @router.delete('/{id}')
-def delete(id, db: Session = Depends(get_db)):
+def delete(id, db: Session = Depends(get_db), user: schema.Seller = Depends(get_user)):
     product = db.query(model.Product).filter(model.Product.id == id)
     if not product.first():
         raise HTTPException(
